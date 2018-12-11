@@ -1,11 +1,14 @@
 package edu.uit.models;
 
+import java.util.List;
+
 //class comment
 public class Comment {
 	private String userName;
 	private String content;
 	private int numberLike;
-	private int numberDislike;
+	private int numberDislike;	
+	private List<Comment> comments;
 
 	public String getUserName() {
 		return userName;
@@ -46,5 +49,14 @@ public class Comment {
 		this.numberLike = numberLike;
 		this.numberDislike = numberDislike;
 	}
+	
 	public Comment() {}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
 }

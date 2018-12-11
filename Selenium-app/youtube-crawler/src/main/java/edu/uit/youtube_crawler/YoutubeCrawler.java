@@ -18,15 +18,18 @@ public class YoutubeCrawler {
 	private WebDriver driver;
 	private YoutubeData youtubeData;
 	
+	/**
+	 * getter of youtubeData
+	 * @return
+	 */
 	public YoutubeData getYoutubeData() {
 		return youtubeData;
 	}
 
-	public void setYoutubeData(YoutubeData youtubeData) {
-		this.youtubeData = youtubeData;
-	}
-
-	// initialize
+	/**
+	 * method initialize
+	 * @param url path to redirect
+	 */
 	public YoutubeCrawler(String url) {
 		System.setProperty("webdriver.chrome.driver", "E:\\git\\Selenium-webdriver\\chromedriver_win32\\chromedriver.exe");
 		this.url = url;
@@ -34,12 +37,19 @@ public class YoutubeCrawler {
 		youtubeData = new YoutubeData();
 	}
 	
-	// run 
-	public void run() throws InterruptedException {
+	/**
+	 * method open chrome and navigate to url
+	 * @throws InterruptedException
+	 */
+	public void openBrowser() throws InterruptedException {
 		driver.get(url);
 		Thread.sleep(5000);
 	}
-	// get title
+	
+	/**
+	 * method get title video
+	 * @return
+	 */
 	public String getTitle() {
 		String title = "";
 		try {
@@ -51,20 +61,43 @@ public class YoutubeCrawler {
 		youtubeData.setTitle(title);
 		return title;
 	}
-	// get View
-	public long getView() {
-		long view = 0;
+	
+	/**
+	 * method get description of video
+	 * @return 
+	 */
+	public String getDescription() {
+		String description = "";
+		try {
+			WebElement element = driver.findElement(By.xpath("//*[@id=\"description\"]/yt-formatted-string"));
+			description = element.getText();
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		youtubeData.setDescription(description);
+		return description;
+	}
+	
+	/**
+	 * method get number view of video
+	 * @return
+	 */
+	public long getNumberView() {
+		long numberView = 0;
 		try {
 			WebElement element = driver.findElement(By.xpath("//*[@id=\"count\"]/yt-view-count-renderer/span[1]"));
-			view = Integer.parseInt(element.getText().split(" ")[0].replaceAll(",", ""));
+			numberView = Integer.parseInt(element.getText().split(" ")[0].replaceAll(",", ""));
 		}catch(Exception e) {
 			System.out.println("Selenium - Canot find element - getView");
 		}
-		youtubeData.setNumberView(view);
-		return view;
+		youtubeData.setNumberView(numberView);
+		return numberView;
 	}
 	
-	// get Like
+	/**
+	 * method get number like of video
+	 * @return
+	 */
 	public long getLike() {
 		long like = 0;
 		try {
@@ -76,7 +109,11 @@ public class YoutubeCrawler {
 		youtubeData.setNumberLike(like);
 		return like;
 	}
-	// get Dislike //*[@id="text"]
+	
+	/**
+	 * method get number dislike of video
+	 * @return
+	 */
 	public long getDislike() {
 		long dislike = 0;
 		try {
@@ -88,7 +125,11 @@ public class YoutubeCrawler {
 		youtubeData.setNumberDislike(dislike);
 		return dislike;
 	}
-	// get channel
+	
+	/**
+	 * method get channel 
+	 * @return
+	 */
 	public String getChannel() {
 		String channel = "";
 		try {
@@ -100,7 +141,12 @@ public class YoutubeCrawler {
 		youtubeData.setChannel(channel);
 		return channel;
 	}
-	// get number comment
+	
+	/**
+	 * method get number comment of video
+	 * @return
+	 * @throws InterruptedException
+	 */
 	public long getNumberComment() throws InterruptedException {
 		long numberComment = 0;
 		try {
@@ -113,8 +159,11 @@ public class YoutubeCrawler {
 		return numberComment;
 	}
 	
-	
-	// get list comment
+	/**
+	 * method get list comment of video
+	 * @return
+	 * @throws InterruptedException
+	 */
 	public List<Comment> getComment() throws InterruptedException {
 		List<Comment> listComments = new ArrayList<Comment>();
 		List<WebElement> comments = driver.findElements(By.xpath("//*[@id=\"comment\"]"));
@@ -142,19 +191,37 @@ public class YoutubeCrawler {
 		return listComments;
 	}
 	
-	public void LoadPage() throws InterruptedException {
+	/**
+	 * method wait page load
+	 * @throws InterruptedException
+	 */
+	public void loadPage() throws InterruptedException {
 		JavascriptExecutor js = (JavascriptExecutor) driver;  
 		int pageHeight  = ((Number) js.executeScript("return document.documentElement.scrollHeight")).intValue();
 		int curHeight = 0;
 		while(curHeight < pageHeight) {
 			curHeight+= 700;
-			js.executeScript("window.scrollBy(0,700)","");
 			Thread.sleep(3000);
+			js.executeScript("window.scrollBy(0,700)","");
+			
 			pageHeight  = ((Number) js.executeScript("return document.documentElement.scrollHeight")).intValue();
 		}
+		try {
+				WebElement buttonShowMore = driver.findElement(By.xpath("//*[@id=\"more\"]"));
+				js.executeScript("arguments[0].scrollIntoView()", buttonShowMore); 
+				js.executeScript("window.scrollBy(0,-100)","");
+				buttonShowMore.click();
+				Thread.sleep(1000);
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
 	}
 	
-	public void CloseBrowser() {
+	/**
+	 * method close browser
+	 */
+	public void closeBrowser() {
 		this.driver.quit();
 	}
 }

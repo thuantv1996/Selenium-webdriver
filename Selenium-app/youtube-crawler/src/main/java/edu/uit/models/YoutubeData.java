@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class YoutubeData {
 
 	@Id private ObjectId _id;
-	private String  classification;
+	private String  description;
 	private String  title;
 	private String channel;
 	private long  numberView;
@@ -23,11 +23,11 @@ public class YoutubeData {
 	public YoutubeData() {}
 	
 	// constructor
-	public YoutubeData(ObjectId _id, String classification, String title, String channel, long numberView,
+	public YoutubeData(ObjectId _id, String description, String title, String channel, long numberView,
 			long numberLike, long numberDislike, long numberComment, List<Comment> comments) {
 		super();
 		this._id = _id;
-		this.classification = classification;
+		this.description = description;
 		this.title = title;
 		this.channel = channel;
 		this.numberView = numberView;
@@ -46,12 +46,12 @@ public class YoutubeData {
 		this._id = _id;
 	}
 
-	public String getClassification() {
-		return classification;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setClassification(String classification) {
-		this.classification = classification;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getTitle() {

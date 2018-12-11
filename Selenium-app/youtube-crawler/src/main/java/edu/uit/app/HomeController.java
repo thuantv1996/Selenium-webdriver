@@ -20,16 +20,17 @@ public class HomeController {
 	@RequestMapping(value = "/youtube/{id}", method = RequestMethod.GET)
 	public YoutubeData getTitle(@PathVariable("id") String id) throws InterruptedException {
 		YoutubeCrawler crawler = new YoutubeCrawler("https://www.youtube.com/watch?v="+id);
-		crawler.run();
-		crawler.LoadPage();
+		crawler.openBrowser();
+		crawler.loadPage();
 		crawler.getTitle();
+		crawler.getDescription();
 		crawler.getChannel();
-		crawler.getView();
+		crawler.getNumberView();
 		crawler.getLike();
 		crawler.getDislike();
 		crawler.getNumberComment();
 		crawler.getComment();
-		crawler.CloseBrowser();
+		crawler.closeBrowser();
 		YoutubeData youtubeData = crawler.getYoutubeData();
 		youtubeData.set_id(ObjectId.get());
 		return repository.save(youtubeData);
