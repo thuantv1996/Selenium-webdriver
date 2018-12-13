@@ -19,7 +19,7 @@ services:
     image: mongo:3.2.21-jessie
     container_name: mongodb 
     volumes:
-     - ~/mongo/mongo-data:/data/db
+     - ~/mongo-data:/data/db
     restart: always
     expose:
       - 27017
