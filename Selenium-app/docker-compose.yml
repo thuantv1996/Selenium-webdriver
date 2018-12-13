@@ -1,0 +1,23 @@
+version: '2'
+services:
+  tomcat:
+    image: crawler
+    ports:
+      - "80:80"
+    links:
+      - mongo
+    environment:
+      MONGODB_HOST: mongo
+      MONGODB_DATABASE: crawler
+      MONGODB_PORT: 27017
+    command: ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/opt/app/target/youtube-crawler-0.0.1-SNAPSHOT.jar"]
+
+   mongo:
+    image: mongo:3.2.21-jessie
+    volumes:
+     - ~/mongo/mongo-data:/data/db
+    restart: always
+    expose:
+      - 27017
+    ports:
+      - 27017:27017
