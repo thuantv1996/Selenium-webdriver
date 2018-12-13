@@ -41,7 +41,9 @@ public class YoutubeCrawler {
 		
 		System.setProperty("webdriver.chrome.driver", seleniumWebdriver);
 
-		driver = new ChromeDriver();
+		ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+		driver = new ChromeDriver(options);
 		youtubeData = new YoutubeData();
 	}
 	
