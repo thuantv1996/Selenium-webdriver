@@ -47,9 +47,9 @@ WORKDIR /opt/app/
 
 RUN cd /opt/app/ && mvn package
 
-RUN usermod -aG sudo chrome
+# RUN usermod -aG sudo chrome
 
-USER chrome
+# USER chrome
 
 # ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/opt/app/target/youtube-crawler-0.0.1-SNAPSHOT.jar"]
 
