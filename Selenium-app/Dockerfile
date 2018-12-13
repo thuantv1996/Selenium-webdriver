@@ -1,6 +1,6 @@
 FROM ubuntu:16.04
 
-RUN apt-get install wget curl maven unzip default-jre default-jdk -y
+RUN  apt-get update && apt-get install wget curl maven unzip default-jre default-jdk -y
 
 RUN apt-get update && apt-get install -y libappindicator1 fonts-liberation
 
