@@ -31,8 +31,16 @@ public class YoutubeCrawler {
 	 * @param url path to redirect
 	 */
 	public YoutubeCrawler(String url) {
-		System.setProperty("webdriver.chrome.driver", "E:\\git\\Selenium-webdriver\\chromedriver_win32\\chromedriver.exe");
 		this.url = url;
+		String seleniumWebdriver = "";
+		try{
+		 	seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER")	
+		}catch(NullPointerException e){
+			seleniumWebdriver  = "E:\\git\\Selenium-webdriver\\chromedriver_win32\\chromedriver.exe"
+		}
+		
+		System.setProperty("webdriver.chrome.driver", seleniumWebdriver);
+
 		driver = new ChromeDriver();
 		youtubeData = new YoutubeData();
 	}
