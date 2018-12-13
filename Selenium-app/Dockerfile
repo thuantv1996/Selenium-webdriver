@@ -9,7 +9,7 @@ ENV JAVA_HOME /usr/lib/jvm/default-java/
 
 RUN echo $JAVA_HOME
 
-RUN wget https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip -O /opt/chromedriver.zip && unzip /opt/chromedriver.zip
+RUN wget https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip && unzip /opt/chromedriver_linux64.zip
 
 ENV SELENIUM_WEB_DRIVER /opt/chromedriver
 
