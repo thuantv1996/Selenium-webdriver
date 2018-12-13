@@ -1,11 +1,10 @@
 FROM ubuntu:16.04
 
-RUN  apt-get update && apt-get install wget curl maven unzip default-jre default-jdk google-chrome-stable -y
+RUN  apt-get update && apt-get install wget curl maven unzip default-jre default-jdk -y
 
 RUN apt-get update && apt-get install -y libappindicator1 fonts-liberation
 
-#RUN apt-get update && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && dpkg -i google-chrome*.deb && apt-get -f install && dpkg --configure -a
-
+RUN apt-get update && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && dpkg gdebi google-chrome*.deb
 ENV JAVA_HOME /usr/lib/jvm/default-java/
 
 RUN echo $JAVA_HOME
