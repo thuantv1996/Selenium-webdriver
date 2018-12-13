@@ -34,9 +34,9 @@ public class YoutubeCrawler {
 		this.url = url;
 		String seleniumWebdriver = "";
 		try{
-		 	seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER")	
+		 	seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER");
 		}catch(NullPointerException e){
-			seleniumWebdriver  = "E:\\git\\Selenium-webdriver\\chromedriver_win32\\chromedriver.exe"
+			seleniumWebdriver  = "E:\\git\\Selenium-webdriver\\chromedriver_win32\\chromedriver.exe";
 		}
 		
 		System.setProperty("webdriver.chrome.driver", seleniumWebdriver);
