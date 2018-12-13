@@ -1,7 +1,10 @@
 version: '2'
+
 services:
+
   tomcat:
-    image: crawler
+    restart: always
+    image: crawler:1.0
     ports:
       - "80:80"
     links:
