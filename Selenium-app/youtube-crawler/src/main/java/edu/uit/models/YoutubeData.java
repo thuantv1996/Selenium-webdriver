@@ -17,14 +17,14 @@ public class YoutubeData {
 	private long  numberLike;
 	private long  numberDislike;
 	private long  numberComment;
-	private List<Comment> comments;
+	private List<YoutubeComment> comments;
 	
 	// constructor
 	public YoutubeData() {}
 	
 	// constructor
 	public YoutubeData(ObjectId _id, String description, String title, String channel, long numberView,
-			long numberLike, long numberDislike, long numberComment, List<Comment> comments) {
+			long numberLike, long numberDislike, long numberComment, List<YoutubeComment> comments) {
 		super();
 		this._id = _id;
 		this.description = description;
@@ -102,11 +102,11 @@ public class YoutubeData {
 		this.numberComment = numberComment;
 	}
 
-	public List<Comment> getComments() {
+	public List<YoutubeComment> getComments() {
 		return comments;
 	}
 
-	public void setComments(List<Comment> comments) {
+	public void setComments(List<YoutubeComment> comments) {
 		this.comments = comments;
 	}
 }

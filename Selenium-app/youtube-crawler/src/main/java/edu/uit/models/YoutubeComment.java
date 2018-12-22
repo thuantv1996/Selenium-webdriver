@@ -3,12 +3,12 @@ package edu.uit.models;
 import java.util.List;
 
 //class comment
-public class Comment {
+public class YoutubeComment {
 	private String userName;
 	private String content;
 	private int numberLike;
 	private int numberDislike;	
-	private List<Comment> comments;
+	private List<YoutubeComment> comments;
 
 	public String getUserName() {
 		return userName;
@@ -42,7 +42,7 @@ public class Comment {
 		this.numberDislike = numberDislike;
 	}
 
-	public Comment(String userName, String content, int numberLike, int numberDislike) {
+	public YoutubeComment(String userName, String content, int numberLike, int numberDislike) {
 		super();
 		this.userName = userName;
 		this.content = content;
@@ -50,13 +50,13 @@ public class Comment {
 		this.numberDislike = numberDislike;
 	}
 	
-	public Comment() {}
+	public YoutubeComment() {}
 
-	public List<Comment> getComments() {
+	public List<YoutubeComment> getComments() {
 		return comments;
 	}
 
-	public void setComments(List<Comment> comments) {
+	public void setComments(List<YoutubeComment> comments) {
 		this.comments = comments;
 	}
 }
