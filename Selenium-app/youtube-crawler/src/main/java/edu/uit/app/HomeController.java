@@ -10,22 +10,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.uit.com.FacebookConstant;
+import edu.uit.crawler.FacebookCrawler;
+import edu.uit.crawler.YoutubeCrawler;
 import edu.uit.dao.FacebookDataRepository;
 import edu.uit.dao.YoutubeDataRepository;
 import edu.uit.models.FacebookData;
 import edu.uit.models.YoutubeData;
-import edu.uit.youtube_crawler.FacebookCrawler;
-import edu.uit.youtube_crawler.YoutubeCrawler;
 
 @RestController
-@RequestMapping(value = "/crawl", method = RequestMethod.GET)
+@RequestMapping(value = "/crawl")
 public class HomeController {
 	@Autowired
 	private YoutubeDataRepository repository;
 	@Autowired
 	private FacebookDataRepository facebookRepository;
 	
-	@RequestMapping(value = "/youtube/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/youtube/{id}", method = RequestMethod.POST)
 	public YoutubeData getTitle(@PathVariable("id") String id) throws InterruptedException {
 		YoutubeCrawler crawler = new YoutubeCrawler("https://www.youtube.com/watch?v="+id);
 		crawler.openBrowser();
@@ -37,15 +37,16 @@ public class HomeController {
 		return repository.save(youtubeData);
 	}
 	
-	@RequestMapping(value = "/facebook", method = RequestMethod.GET)
-	public List<FacebookData> getFacebook() throws InterruptedException {
-		FacebookCrawler crawler = new FacebookCrawler("https://www.facebook.com/groups/126322494891797");
-		crawler.loginFacebook(FacebookConstant.USER, FacebookConstant.PASSWORD);
+	@RequestMapping(value = "/facebook/{id}/{account}/{password}", method = RequestMethod.POST)
+	public List<FacebookData> getFacebook(@PathVariable("id") String id,@PathVariable("account") String acccount, 
+										  @PathVariable("password") String password) throws InterruptedException {
+		FacebookCrawler crawler = new FacebookCrawler("https://www.facebook.com/groups/"+id);
+		crawler.loginFacebook(acccount, password);
 		crawler.loadPage();
 		crawler.crawlData();
 		crawler.closeBrowser();
 		List<FacebookData> fbDatas = crawler.getFacebookDatas();
-		// return facebookRepository.save(fbDatas);
+		facebookRepository.save(fbDatas);
 		return fbDatas;
 	}
 }

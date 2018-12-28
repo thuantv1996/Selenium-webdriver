@@ -1,4 +1,4 @@
-package edu.uit.youtube_crawler;
+package edu.uit.crawler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
