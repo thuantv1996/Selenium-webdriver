@@ -1,5 +1,7 @@
 FROM khangtd/crawler
 
+RUN rm -rf /opt/app/
+
 COPY ./youtube-crawler/ /opt/app/
 
 WORKDIR /opt/app/
