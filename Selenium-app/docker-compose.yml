@@ -13,6 +13,7 @@ services:
       MONGODB_HOST: mongo
       MONGODB_DATABASE: crawler
       MONGODB_PORT: 27017
+      RUNNING_CLOUD: true
     command: ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/opt/app/target/youtube-crawler-0.0.1-SNAPSHOT.jar"]
 
   mongo:

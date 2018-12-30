@@ -1,4 +1,4 @@
-package edu.uit.youtube_crawler;
+package edu.uit.crawler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import edu.uit.models.Comment;
+import edu.uit.com.YoutubeConstant;
+import edu.uit.models.YoutubeComment;
 import edu.uit.models.YoutubeData;
 
 public class YoutubeCrawler {
@@ -37,15 +38,25 @@ public class YoutubeCrawler {
 		try{
 		 	seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER");
 		}catch(NullPointerException e){
-			seleniumWebdriver  = "E:\\git\\Selenium-webdriver\\chromedriver_win32\\chromedriver.exe";
+			seleniumWebdriver  = YoutubeConstant.PATH_CHROME_EXE;
 		}
 		
 		System.setProperty("webdriver.chrome.driver", seleniumWebdriver);
 
 		ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--no-sandbox");
+
+
+
+		try{
+			seleniumWebdriver = System.getenv("RUNNING_CLOUD");
+			options.addArguments("--headless");
+			options.addArguments("--no-sandbox");	
+	   }catch(NullPointerException e){
+		   
+	   }
+		
 		driver = new ChromeDriver(options);
+		
 		youtubeData = new YoutubeData();
 	}
 	
@@ -54,22 +65,30 @@ public class YoutubeCrawler {
 	 * @throws InterruptedException
 	 */
 	public void openBrowser() throws InterruptedException {
+		// open browser
+		driver = new ChromeDriver();
+		// navigate to url
 		driver.get(url);
-		Thread.sleep(5000);
+		// // wait for load
+		Thread.sleep(YoutubeConstant.TIME_OUT);
 	}
 	
 	/**
 	 * method get title video
 	 * @return
 	 */
-	public String getTitle() {
+	private String getTitle() {
 		String title = "";
 		try {
-			WebElement element = driver.findElement(By.xpath("//*[@id=\"container\"]/h1/yt-formatted-string"));
+			// get element contain title video
+			WebElement element = driver.findElement(By.xpath(YoutubeConstant.XP_TITLE));
+			// get title
 			title = element.getText();
 		}catch(Exception e) {
-			System.out.println("Selenium - Canot find element - getTitle");
+			// print exception
+			System.out.println(e);
 		}
+		// put into model
 		youtubeData.setTitle(title);
 		return title;
 	}
@@ -78,14 +97,18 @@ public class YoutubeCrawler {
 	 * method get description of video
 	 * @return 
 	 */
-	public String getDescription() {
+	private String getDescription() {
 		String description = "";
 		try {
-			WebElement element = driver.findElement(By.xpath("//*[@id=\"description\"]/yt-formatted-string"));
+			// get element contain description video
+			WebElement element = driver.findElement(By.xpath(YoutubeConstant.XP_DESCRIPTION));
+			// get description
 			description = element.getText();
 		}catch(Exception e) {
-			System.out.println(e.getMessage());
+			// print exception
+			System.out.println(e);
 		}
+		// put into model
 		youtubeData.setDescription(description);
 		return description;
 	}
@@ -97,11 +120,15 @@ public class YoutubeCrawler {
 	public long getNumberView() {
 		long numberView = 0;
 		try {
-			WebElement element = driver.findElement(By.xpath("//*[@id=\"count\"]/yt-view-count-renderer/span[1]"));
+			// get element contain number view video
+			WebElement element = driver.findElement(By.xpath(YoutubeConstant.XP_NUM_VIEW));
+			// get number view
 			numberView = Integer.parseInt(element.getText().split(" ")[0].replaceAll(",", ""));
 		}catch(Exception e) {
-			System.out.println("Selenium - Canot find element - getView");
+			// print exception
+			System.out.println(e);
 		}
+		// put into model
 		youtubeData.setNumberView(numberView);
 		return numberView;
 	}
@@ -110,14 +137,18 @@ public class YoutubeCrawler {
 	 * method get number like of video
 	 * @return
 	 */
-	public long getLike() {
+	private long getLike() {
 		long like = 0;
 		try {
-			WebElement element = driver.findElements(By.xpath("//*[@id=\"text\"]")).get(2);
+			// get element contain item like video
+			WebElement element = driver.findElements(By.xpath(YoutubeConstant.XP_LIKE)).get(2);
+			// get like
 			like = Integer.parseInt(element.getAttribute("aria-label").split(" ")[0].replaceAll(",", ""));
-		}catch(Exception e) {
-			System.out.println("Selenium - Canot find element - getLike");
+		} catch (Exception e) {
+			// print exception
+			System.out.println(e);
 		}
+		// put into model
 		youtubeData.setNumberLike(like);
 		return like;
 	}
@@ -126,14 +157,18 @@ public class YoutubeCrawler {
 	 * method get number dislike of video
 	 * @return
 	 */
-	public long getDislike() {
+	private long getDislike() {
 		long dislike = 0;
 		try {
-			WebElement element = driver.findElements(By.xpath("//*[@id=\"text\"]")).get(3);
+			// get element contain item dislike video
+			WebElement element = driver.findElements(By.xpath(YoutubeConstant.XP_DISLIKE)).get(3);
+			// get dislike
 			dislike = Integer.parseInt(element.getAttribute("aria-label").split(" ")[0].replaceAll(",", ""));
-		}catch(Exception e) {
-			System.out.println("Selenium - Canot find element - getDislike");
+		} catch (Exception e) {
+			// print exception
+			System.out.println(e);
 		}
+		// put into model
 		youtubeData.setNumberDislike(dislike);
 		return dislike;
 	}
@@ -142,14 +177,18 @@ public class YoutubeCrawler {
 	 * method get channel 
 	 * @return
 	 */
-	public String getChannel() {
+	private String getChannel() {
 		String channel = "";
 		try {
-			WebElement element = driver.findElement(By.xpath("//*[@id=\"owner-name\"]/a"));
+			// get element contain channel video
+			WebElement element = driver.findElement(By.xpath(YoutubeConstant.XP_CHANNEL));
+			// get channel
 			channel = element.getText();
-		}catch(Exception e) {
-			System.out.println("Selenium - Canot find element - getChannel");
+		} catch (Exception e) {
+			// print exception
+			System.out.println(e);
 		}
+		// put into model
 		youtubeData.setChannel(channel);
 		return channel;
 	}
@@ -162,11 +201,15 @@ public class YoutubeCrawler {
 	public long getNumberComment() throws InterruptedException {
 		long numberComment = 0;
 		try {
-			WebElement element = driver.findElement(By.xpath("//*[@id=\"count\"]/yt-formatted-string"));
+			// get element contain number comment video
+			WebElement element = driver.findElement(By.xpath(YoutubeConstant.XP_NUM_CMT));
+			// get number comment
 			numberComment = Integer.parseInt(element.getText().split(" ")[0].replaceAll(",", ""));
-		}catch(Exception e) {
-			System.out.println("Selenium - Canot find element - getNumberComment");
+		}catch (Exception e) {
+			// print exception
+			System.out.println(e);
 		}
+		// put into model
 		youtubeData.setNumberComment(numberComment);
 		return numberComment;
 	}
@@ -176,16 +219,22 @@ public class YoutubeCrawler {
 	 * @return
 	 * @throws InterruptedException
 	 */
-	public List<Comment> getComment() throws InterruptedException {
-		List<Comment> listComments = new ArrayList<Comment>();
-		List<WebElement> comments = driver.findElements(By.xpath("//*[@id=\"comment\"]"));
+	public List<YoutubeComment> getComment() throws InterruptedException {
+		// list comment (result)
+		List<YoutubeComment> listComments = new ArrayList<YoutubeComment>();
+		// list element comment
+		List<WebElement> comments = driver.findElements(By.xpath(YoutubeConstant.XP_CMT));
+		// repeat all element
 		for (WebElement cmt : comments) {
-			Comment comment = new Comment() ;
-			comment.setUserName(cmt.findElement(By.id("author-text")).findElement(By.tagName("span")).getText());
-			comment.setContent(cmt.findElement(By.id("content-text")).getText());
+			YoutubeComment comment = new YoutubeComment() ;
+			// get and put user name into model
+			comment.setUserName(cmt.findElement(By.id(YoutubeConstant.ID_USER_CMT)).findElement(By.tagName("span")).getText());
+			// get and put content into model
+			comment.setContent(cmt.findElement(By.id(YoutubeConstant.ID_CONTENT_CMT)).getText());
 			String like ="";
 			try {
-				like = (cmt.findElement(By.id("vote-count-middle")).getAttribute("aria-label").toString());
+				// get and put like into model
+				like = (cmt.findElement(By.id(YoutubeConstant.ID_LIKE_CMT)).getAttribute("aria-label").toString());
 				like = like.split(" ")[0].replaceAll(".", "").replaceAll("K", "000").replaceAll("M", "000000");
 			}catch(Exception e){
 				comment.setNumberLike(0);
@@ -196,7 +245,7 @@ public class YoutubeCrawler {
 			}catch(Exception e){
 				comment.setNumberLike(0);
 			}
-			
+			// andd model to list
 			listComments.add(comment);
 		}
 		youtubeData.setComments(listComments);
@@ -208,26 +257,49 @@ public class YoutubeCrawler {
 	 * @throws InterruptedException
 	 */
 	public void loadPage() throws InterruptedException {
+		// create object javascript
 		JavascriptExecutor js = (JavascriptExecutor) driver;  
+		// get page height
 		int pageHeight  = ((Number) js.executeScript("return document.documentElement.scrollHeight")).intValue();
 		int curHeight = 0;
+		// code scroll to end page
 		while(curHeight < pageHeight) {
+			// scroll height 700px
 			curHeight+= 700;
-			Thread.sleep(3000);
 			js.executeScript("window.scrollBy(0,700)","");
-			
+			// wait for load
+			Thread.sleep(YoutubeConstant.TIME_OUT);
+			// get page height
 			pageHeight  = ((Number) js.executeScript("return document.documentElement.scrollHeight")).intValue();
 		}
 		try {
-				WebElement buttonShowMore = driver.findElement(By.xpath("//*[@id=\"more\"]"));
+			// click button show more description
+				WebElement buttonShowMore = driver.findElement(By.xpath(YoutubeConstant.XP_DES_MORE));
 				js.executeScript("arguments[0].scrollIntoView()", buttonShowMore); 
 				js.executeScript("window.scrollBy(0,-100)","");
 				buttonShowMore.click();
-				Thread.sleep(1000);
+				// wait for load
+				Thread.sleep(YoutubeConstant.TIME_OUT);
 		}catch(Exception e) {
-			System.out.println(e.getMessage());
+			// print exception
+			System.out.println(e);
 		}
 		
+	}
+	
+	/**
+	 * method crawl data to youtube
+	 * @throws InterruptedException
+	 */
+	public void crawlData() throws InterruptedException {
+		getTitle();
+		getDescription();
+		getChannel();
+		getNumberView();
+		getLike();
+		getDislike();
+		getNumberComment();
+		getComment();
 	}
 	
 	/**
