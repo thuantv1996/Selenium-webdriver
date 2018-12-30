@@ -4,7 +4,7 @@ version: '2'
 services:
   tomcat:
     restart: always
-    image: crawler:1.0
+    image: khangtd/crawler
     ports:
       - "80:80"
     links:
