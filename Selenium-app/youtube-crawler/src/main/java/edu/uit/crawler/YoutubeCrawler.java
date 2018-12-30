@@ -225,29 +225,29 @@ public class YoutubeCrawler {
 		// list element comment
 		List<WebElement> comments = driver.findElements(By.xpath(YoutubeConstant.XP_CMT));
 		// repeat all element
-		for (WebElement cmt : comments) {
-			YoutubeComment comment = new YoutubeComment() ;
-			// get and put user name into model
-			comment.setUserName(cmt.findElement(By.id(YoutubeConstant.ID_USER_CMT)).findElement(By.tagName("span")).getText());
-			// get and put content into model
-			comment.setContent(cmt.findElement(By.id(YoutubeConstant.ID_CONTENT_CMT)).getText());
-			String like ="";
-			try {
-				// get and put like into model
-				like = (cmt.findElement(By.id(YoutubeConstant.ID_LIKE_CMT)).getAttribute("aria-label").toString());
-				like = like.split(" ")[0].replaceAll(".", "").replaceAll("K", "000").replaceAll("M", "000000");
-			}catch(Exception e){
-				comment.setNumberLike(0);
-			}
+		// for (WebElement cmt : comments) {
+		// 	YoutubeComment comment = new YoutubeComment() ;
+		// 	// get and put user name into model
+		// 	comment.setUserName(cmt.findElement(By.id(YoutubeConstant.ID_USER_CMT)).findElement(By.tagName("span")).getText());
+		// 	// get and put content into model
+		// 	comment.setContent(cmt.findElement(By.id(YoutubeConstant.ID_CONTENT_CMT)).getText());
+		// 	String like ="";
+		// 	try {
+		// 		// get and put like into model
+		// 		like = (cmt.findElement(By.id(YoutubeConstant.ID_LIKE_CMT)).getAttribute("aria-label").toString());
+		// 		like = like.split(" ")[0].replaceAll(".", "").replaceAll("K", "000").replaceAll("M", "000000");
+		// 	}catch(Exception e){
+		// 		comment.setNumberLike(0);
+		// 	}
 			 
-			try {
-				comment.setNumberLike(Integer.parseInt(like));
-			}catch(Exception e){
-				comment.setNumberLike(0);
-			}
-			// andd model to list
-			listComments.add(comment);
-		}
+		// 	try {
+		// 		comment.setNumberLike(Integer.parseInt(like));
+		// 	}catch(Exception e){
+		// 		comment.setNumberLike(0);
+		// 	}
+		// 	// andd model to list
+		// 	listComments.add(comment);
+		// }
 		youtubeData.setComments(listComments);
 		return listComments;
 	}
