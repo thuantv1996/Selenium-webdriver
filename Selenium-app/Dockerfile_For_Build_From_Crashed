@@ -1,0 +1,55 @@
+FROM ubuntu:16.04
+
+
+# Install deps + add Chrome Stable + purge all the things
+RUN apt-get update && apt-get install -y \
+	apt-transport-https \
+	ca-certificates \
+	curl \
+	gnupg \
+	--no-install-recommends \
+	&& curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+	&& echo "deb https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
+	&& apt-get update && apt-get install -y \
+	google-chrome-stable \
+	fontconfig \
+	fonts-ipafont-gothic \
+	fonts-wqy-zenhei \
+	fonts-thai-tlwg \
+	fonts-kacst \
+	fonts-symbola \
+	fonts-noto \
+	ttf-freefont \
+	--no-install-recommends \
+	&& apt-get purge --auto-remove -y curl gnupg --allow-remove-essential\
+	&& rm -rf /var/lib/apt/lists/*
+
+# Add Chrome as a user
+RUN groupadd -r chrome && useradd -r -g chrome -G audio,video chrome \
+    && mkdir -p /home/chrome && chown -R chrome:chrome /home/chrome \
+		&& mkdir -p /opt/google/chrome && chown -R chrome:chrome /opt/google/chrome
+
+RUN  apt-get update && apt-get install wget curl maven unzip default-jre default-jdk gdebi -y
+
+RUN apt-get update && apt-get install -y libappindicator1 fonts-liberation
+
+ENV JAVA_HOME /usr/lib/jvm/default-java/
+
+RUN echo $JAVA_HOME
+
+RUN cd /opt/ && wget https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip && unzip /opt/chromedriver_linux64.zip
+
+ENV SELENIUM_WEB_DRIVER /opt/chromedriver
+
+COPY ./youtube-crawler/ /opt/app/
+
+WORKDIR /opt/app/
+
+RUN cd /opt/app/ && mvn package
+
+# RUN usermod -aG sudo chrome
+
+# USER chrome
+
+# ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/opt/app/target/youtube-crawler-0.0.1-SNAPSHOT.jar"]
+
