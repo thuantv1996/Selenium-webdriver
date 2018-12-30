@@ -42,6 +42,8 @@ RUN cd /opt/ && wget https://chromedriver.storage.googleapis.com/2.45/chromedriv
 ENV SELENIUM_WEB_DRIVER /opt/chromedriver
 
 COPY ./youtube-crawler/ /opt/app/
+COPY ./Procfile /opt/app/
+COPY ./DOKKU_SCALE /opt/app/
 
 WORKDIR /opt/app/
 

@@ -3,6 +3,8 @@ FROM khangtd/crawler
 RUN rm -rf /opt/app/
 
 COPY ./youtube-crawler/ /opt/app/
+COPY ./Procfile /opt/app/
+COPY ./DOKKU_SCALE /opt/app/
 
 WORKDIR /opt/app/
 
