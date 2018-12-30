@@ -79,11 +79,6 @@ public class FacebookCrawler {
 		
 		System.setProperty("webdriver.chrome.driver", seleniumWebdriver);
 
-
-
-		ChromeOptions options = new ChromeOptions();
-
-
 		try{
 			seleniumWebdriver = System.getenv("RUNNING_CLOUD");
 			options.addArguments("--headless");
