@@ -13,6 +13,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import edu.uit.com.YoutubeConstant;
 import edu.uit.models.YoutubeComment;
 import edu.uit.models.YoutubeData;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class YoutubeCrawler {
 
@@ -36,15 +37,19 @@ public class YoutubeCrawler {
 		this.url = url;
 		String seleniumWebdriver = "";
 		ChromeOptions options = new ChromeOptions();
+	
+		seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER");
 
-		try{
-			 seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER");
-			 options.addArguments("--headless");
-			 options.addArguments("--no-sandbox");
-		}catch(NullPointerException e){
+		if(seleniumWebdriver != null){
+		   options.addArguments("--headless");
+		   options.addArguments("--no-sandbox");
+		   options.addArguments("--whitelisted-ips");		
+		   System.out.println("dafuq =================================");
+		   System.out.println(seleniumWebdriver.toString());
+		   System.out.println(options.toString());
+		} else {
 			seleniumWebdriver  = YoutubeConstant.PATH_CHROME_EXE;
 		}
-		
 		System.setProperty("webdriver.chrome.driver", seleniumWebdriver);
 		driver = new ChromeDriver(options);
 		youtubeData = new YoutubeData();

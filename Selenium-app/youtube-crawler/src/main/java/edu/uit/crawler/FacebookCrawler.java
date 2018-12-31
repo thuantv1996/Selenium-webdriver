@@ -15,6 +15,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import edu.uit.com.FacebookConstant;
 import edu.uit.models.FacebookComment;
 import edu.uit.models.FacebookData;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class FacebookCrawler {
 	private String url;
@@ -69,27 +70,32 @@ public class FacebookCrawler {
 		prefs.put(FacebookConstant.DIS_NOTIFICATIONS, 2);
 		ChromeOptions options = new ChromeOptions();
 		options.setExperimentalOption("prefs", prefs);
-		String seleniumWebdriver = "";
-
-		ChromeOptions options = new ChromeOptions();
-
-		try{
-			 seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER");
-			 options.addArguments("--headless");
-			 options.addArguments("--no-sandbox");
-		}catch(NullPointerException e){
-			seleniumWebdriver  = YoutubeConstant.PATH_CHROME_EXE;
-		}
 		
-		System.setProperty("webdriver.chrome.driver", seleniumWebdriver);
+		String seleniumWebdriver = "";	
 
-      		// open browser
-			driver = new ChromeDriver(options);
-			// maximize windows
-			driver.manage().window().maximize();
-			// initialize  model
-			facebookDatas = new ArrayList<FacebookData>();	
+		
+		seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER");
+		
+		if(seleniumWebdriver != null) {
+		   options.addArguments("--headless");
+		   options.addArguments("--no-sandbox");
+		   options.addArguments("--whitelisted-ips");
+		   System.out.println("dafuq =================================");
+		   System.out.println(seleniumWebdriver.toString());
+		   System.out.println(options.toString());
+		} else {
+			seleniumWebdriver  = FacebookConstant.PATH_CHROME_EXE;
+		}
 	
+		System.setProperty("webdriver.chrome.driver", seleniumWebdriver);
+		
+      		// open browser
+		driver = new ChromeDriver(options);
+			// maximize windows
+		driver.manage().window().maximize();
+			// initialize  model
+		facebookDatas = new ArrayList<FacebookData>();	
+
 	}
 	
 	/**
