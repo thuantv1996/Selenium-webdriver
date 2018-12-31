@@ -35,28 +35,18 @@ public class YoutubeCrawler {
 	public YoutubeCrawler(String url) {
 		this.url = url;
 		String seleniumWebdriver = "";
+		ChromeOptions options = new ChromeOptions();
+
 		try{
-		 	seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER");
+			 seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER");
+			 options.addArguments("--headless");
+			 options.addArguments("--no-sandbox");
 		}catch(NullPointerException e){
 			seleniumWebdriver  = YoutubeConstant.PATH_CHROME_EXE;
 		}
 		
 		System.setProperty("webdriver.chrome.driver", seleniumWebdriver);
-
-		ChromeOptions options = new ChromeOptions();
-
-
-
-		try{
-			seleniumWebdriver = System.getenv("RUNNING_CLOUD");
-			options.addArguments("--headless");
-			options.addArguments("--no-sandbox");	
-	   }catch(NullPointerException e){
-		   
-	   }
-		
 		driver = new ChromeDriver(options);
-		
 		youtubeData = new YoutubeData();
 	}
 	

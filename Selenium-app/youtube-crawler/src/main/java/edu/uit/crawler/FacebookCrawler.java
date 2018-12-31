@@ -71,21 +71,18 @@ public class FacebookCrawler {
 		options.setExperimentalOption("prefs", prefs);
 		String seleniumWebdriver = "";
 
+		ChromeOptions options = new ChromeOptions();
+
 		try{
-		 	seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER");
+			 seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER");
+			 options.addArguments("--headless");
+			 options.addArguments("--no-sandbox");
 		}catch(NullPointerException e){
-			seleniumWebdriver  = FacebookConstant.PATH_CHROME_EXE;
+			seleniumWebdriver  = YoutubeConstant.PATH_CHROME_EXE;
 		}
 		
 		System.setProperty("webdriver.chrome.driver", seleniumWebdriver);
 
-		try{
-			seleniumWebdriver = System.getenv("RUNNING_CLOUD");
-			options.addArguments("--headless");
-			options.addArguments("--no-sandbox");	
-	   }catch(NullPointerException e){
-		   
-	   }
       		// open browser
 			driver = new ChromeDriver(options);
 			// maximize windows
