@@ -47,49 +47,25 @@ public class FacebookCrawler {
 		/*
 		 * code disable notifications on chrome
 		 */
-		// Map<String, Object> prefs = new HashMap<String, Object>();
-		// prefs.put(FacebookConstant.DIS_NOTIFICATIONS, 2);
-		// ChromeOptions options = new ChromeOptions();
-		// options.setExperimentalOption("prefs", prefs);
-		// // path to chrome.exe
-		// System.setProperty("webdriver.chrome.driver", 
-		// 				   FacebookConstant.PATH_CHROME_EXE );
-		// // set url 
-		// this.url = url;
-		// // open browser
-		// driver = new ChromeDriver(options);
-		// // maximize windows
-		// driver.manage().window().maximize();
-		// // initialize  model
-		// facebookDatas = new ArrayList<FacebookData>();	
-
-
 		this.url = url;
+		String 	seleniumWebdriver = FacebookConstant.PATH_CHROME_EXE;
+
+		ChromeOptions options = new ChromeOptions();
 		
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put(FacebookConstant.DIS_NOTIFICATIONS, 2);
-		ChromeOptions options = new ChromeOptions();
 		options.setExperimentalOption("prefs", prefs);
-		
-		String seleniumWebdriver = "";	
-
-		
-		seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER");
-		
-		if(seleniumWebdriver != null) {
-		   options.addArguments("--headless");
-		   options.addArguments("--no-sandbox");
-		   options.addArguments("--whitelisted-ips");
-		   System.out.println("dafuq =================================");
-		   System.out.println(seleniumWebdriver.toString());
-		   System.out.println(options.toString());
-		} else {
-			seleniumWebdriver  = FacebookConstant.PATH_CHROME_EXE;
-		}
 	
+		
+		if(System.getenv("SELENIUM_WEB_DRIVER") != null){
+			seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER");	
+			options.addArguments("--headless");
+			options.addArguments("--no-sandbox");
+			options.addArguments("--whitelisted-ips=''");
+		}
+		
 		System.setProperty("webdriver.chrome.driver", seleniumWebdriver);
 		
-      		// open browser
 		driver = new ChromeDriver(options);
 			// maximize windows
 		driver.manage().window().maximize();

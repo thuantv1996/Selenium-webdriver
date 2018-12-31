@@ -1,7 +1,10 @@
 package edu.uit.crawler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -13,7 +16,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import edu.uit.com.YoutubeConstant;
 import edu.uit.models.YoutubeComment;
 import edu.uit.models.YoutubeData;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class YoutubeCrawler {
 
@@ -35,22 +37,24 @@ public class YoutubeCrawler {
 	 */
 	public YoutubeCrawler(String url) {
 		this.url = url;
-		String seleniumWebdriver = "";
+		
+		String 	seleniumWebdriver = YoutubeConstant.PATH_CHROME_EXE;
 		ChromeOptions options = new ChromeOptions();
+		
+		Map<String, Object> prefs = new HashMap<String, Object>();
+		prefs.put(YoutubeConstant.DIS_NOTIFICATIONS, 2);
+		options.setExperimentalOption("prefs", prefs);
 	
-		seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER");
-
-		if(seleniumWebdriver != null){
-		   options.addArguments("--headless");
-		   options.addArguments("--no-sandbox");
-		   options.addArguments("--whitelisted-ips");		
-		   System.out.println("dafuq =================================");
-		   System.out.println(seleniumWebdriver.toString());
-		   System.out.println(options.toString());
-		} else {
-			seleniumWebdriver  = YoutubeConstant.PATH_CHROME_EXE;
+		
+		if(System.getenv("SELENIUM_WEB_DRIVER") != null){
+			seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER");	
+			options.addArguments("--headless");
+			options.addArguments("--no-sandbox");
+			options.addArguments("--whitelisted-ips=''");
 		}
+
 		System.setProperty("webdriver.chrome.driver", seleniumWebdriver);
+		
 		driver = new ChromeDriver(options);
 		youtubeData = new YoutubeData();
 	}
@@ -60,8 +64,6 @@ public class YoutubeCrawler {
 	 * @throws InterruptedException
 	 */
 	public void openBrowser() throws InterruptedException {
-		// open browser
-		driver = new ChromeDriver();
 		// navigate to url
 		driver.get(url);
 		// // wait for load
