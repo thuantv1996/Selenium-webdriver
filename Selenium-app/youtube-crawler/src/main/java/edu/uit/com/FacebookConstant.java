@@ -8,7 +8,7 @@ public class FacebookConstant {
 	public static final long TIME_OUT = 1800;
 	public static final int LIMIT_POST = 15;
 	
-	public static final String USER = "14520918@gm.uit.edu.vn";
+	public static final String USERNAME = "14520918@gm.uit.edu.vn";
 	public static final String PASSWORD = "TuVanThuan";
 	
 	/**

@@ -37,11 +37,22 @@ public class HomeController {
 		return repository.save(youtubeData);
 	}
 	
-	@RequestMapping(value = "/facebook/{id}/{account}/{password}", method = RequestMethod.POST)
-	public List<FacebookData> getFacebook(@PathVariable("id") String id,@PathVariable("account") String acccount, 
-										  @PathVariable("password") String password) throws InterruptedException {
+	@RequestMapping(value = "/facebook/group/{id}", method = RequestMethod.POST)
+	public List<FacebookData> getFacebookGroup(@PathVariable("id") String id) throws InterruptedException {
 		FacebookCrawler crawler = new FacebookCrawler("https://www.facebook.com/groups/"+id);
-		crawler.loginFacebook(acccount, password);
+		crawler.loginFacebook(FacebookConstant.USERNAME, FacebookConstant.PASSWORD);
+		crawler.loadPage();
+		crawler.crawlData();
+		crawler.closeBrowser();
+		List<FacebookData> fbDatas = crawler.getFacebookDatas();
+		facebookRepository.save(fbDatas);
+		return fbDatas;
+	}
+
+	@RequestMapping(value = "/facebook/nongroup/{id}", method = RequestMethod.POST)
+	public List<FacebookData> getFacebookNonGroup(@PathVariable("id") String id) throws InterruptedException {
+		FacebookCrawler crawler = new FacebookCrawler("https://www.facebook.com/"+id);
+		crawler.loginFacebook(FacebookConstant.USERNAME, FacebookConstant.PASSWORD);
 		crawler.loadPage();
 		crawler.crawlData();
 		crawler.closeBrowser();
