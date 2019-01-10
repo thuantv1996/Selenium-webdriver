@@ -17,6 +17,7 @@ import edu.uit.dao.YoutubeDataRepository;
 import edu.uit.models.FacebookData;
 import edu.uit.models.YoutubeData;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/crawl")
 public class HomeController {
