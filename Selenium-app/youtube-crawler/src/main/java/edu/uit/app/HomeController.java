@@ -17,6 +17,8 @@ import edu.uit.dao.YoutubeDataRepository;
 import edu.uit.models.FacebookData;
 import edu.uit.models.YoutubeData;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/crawl")
