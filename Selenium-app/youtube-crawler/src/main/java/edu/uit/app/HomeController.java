@@ -38,7 +38,7 @@ public class HomeController {
 		return repository.save(youtubeData);
 	}
 	
-	@RequestMapping(value = "/facebook/group/{id}/{username}/{password}", method = RequestMethod.POST)
+	@RequestMapping(value = "/facebook/{id}/{username}/{password}", method = RequestMethod.POST)
 	public List<FacebookData> getFacebookGroup(@PathVariable("id") String id,@PathVariable("username") String username,@PathVariable("password") String password) throws InterruptedException {
 		FacebookCrawler crawler = new FacebookCrawler("https://www.facebook.com/groups/"+id);
 		crawler.loginFacebook(username, password);
