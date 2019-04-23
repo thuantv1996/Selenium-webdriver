@@ -1,0 +1,26 @@
+
+version: '2'
+
+services:
+  tomcat:
+    restart: always
+    image: khangtd/crawler
+    ports:
+      - "80:80"
+    links:
+      - mongo
+    environment:
+      MONGO_URL: mongodb://mongo/crawler
+      RUNNING_CLOUD: true
+    command: ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/opt/app/target/youtube-crawler-0.0.1-SNAPSHOT.jar"]
+
+  mongo:
+    image: mongo:3.2.21-jessie
+    container_name: mongodb 
+    volumes:
+     - ~/mongo-data:/data/db
+    restart: always
+    expose:
+      - 27017
+    ports:
+      - 27017:27017

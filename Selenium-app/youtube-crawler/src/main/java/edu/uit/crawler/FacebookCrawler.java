@@ -15,6 +15,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import edu.uit.com.FacebookConstant;
 import edu.uit.models.FacebookComment;
 import edu.uit.models.FacebookData;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class FacebookCrawler {
 	private String url;
@@ -46,21 +47,31 @@ public class FacebookCrawler {
 		/*
 		 * code disable notifications on chrome
 		 */
+		this.url = url;
+		String 	seleniumWebdriver = FacebookConstant.PATH_CHROME_EXE;
+
+		ChromeOptions options = new ChromeOptions();
+		
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put(FacebookConstant.DIS_NOTIFICATIONS, 2);
-		ChromeOptions options = new ChromeOptions();
 		options.setExperimentalOption("prefs", prefs);
-		// path to chrome.exe
-		System.setProperty("webdriver.chrome.driver", 
-						   FacebookConstant.PATH_CHROME_EXE );
-		// set url 
-		this.url = url;
-		// open browser
+	
+		
+		if(System.getenv("SELENIUM_WEB_DRIVER") != null){
+			seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER");	
+			options.addArguments("--headless");
+			options.addArguments("--no-sandbox");
+			options.addArguments("--whitelisted-ips=''");
+		}
+		
+		System.setProperty("webdriver.chrome.driver", seleniumWebdriver);
+		
 		driver = new ChromeDriver(options);
-		// maximize windows
+			// maximize windows
 		driver.manage().window().maximize();
-		// initialize  model
+			// initialize  model
 		facebookDatas = new ArrayList<FacebookData>();	
+
 	}
 	
 	/**

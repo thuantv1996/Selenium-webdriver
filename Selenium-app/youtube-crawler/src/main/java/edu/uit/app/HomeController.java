@@ -17,6 +17,9 @@ import edu.uit.dao.YoutubeDataRepository;
 import edu.uit.models.FacebookData;
 import edu.uit.models.YoutubeData;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/crawl")
 public class HomeController {
@@ -25,6 +28,8 @@ public class HomeController {
 	@Autowired
 	private FacebookDataRepository facebookRepository;
 	
+	
+	@CrossOrigin(origins="*")
 	@RequestMapping(value = "/youtube/{id}", method = RequestMethod.POST)
 	public YoutubeData getTitle(@PathVariable("id") String id) throws InterruptedException {
 		YoutubeCrawler crawler = new YoutubeCrawler("https://www.youtube.com/watch?v="+id);
@@ -37,11 +42,11 @@ public class HomeController {
 		return repository.save(youtubeData);
 	}
 	
-	@RequestMapping(value = "/facebook/{id}/{account}/{password}", method = RequestMethod.POST)
-	public List<FacebookData> getFacebook(@PathVariable("id") String id,@PathVariable("account") String acccount, 
-										  @PathVariable("password") String password) throws InterruptedException {
+	@CrossOrigin(origins="*")
+	@RequestMapping(value = "/facebook/{id}/{username}/{password}", method = RequestMethod.POST)
+	public List<FacebookData> getFacebookGroup(@PathVariable("id") String id,@PathVariable("username") String username,@PathVariable("password") String password) throws InterruptedException {
 		FacebookCrawler crawler = new FacebookCrawler("https://www.facebook.com/groups/"+id);
-		crawler.loginFacebook(acccount, password);
+		crawler.loginFacebook(username, password);
 		crawler.loadPage();
 		crawler.crawlData();
 		crawler.closeBrowser();
@@ -49,4 +54,5 @@ public class HomeController {
 		facebookRepository.save(fbDatas);
 		return fbDatas;
 	}
+
 }

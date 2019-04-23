@@ -3,6 +3,8 @@ package edu.uit.com;
 public class YoutubeConstant {
 	public static final String PATH_CHROME_EXE = "E:\\git\\Selenium-webdriver\\chromedriver_win32\\chromedriver.exe";
 	public static final long TIME_OUT = 1800;
+	public static final String DIS_NOTIFICATIONS = "profile.default_content_setting_values.notifications";
+
 	/**
 	 * xPath
 	 */

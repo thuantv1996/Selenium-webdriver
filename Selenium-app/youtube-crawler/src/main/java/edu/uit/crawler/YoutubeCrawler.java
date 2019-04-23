@@ -1,13 +1,17 @@
 package edu.uit.crawler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import edu.uit.com.YoutubeConstant;
 import edu.uit.models.YoutubeComment;
@@ -32,8 +36,26 @@ public class YoutubeCrawler {
 	 * @param url path to redirect
 	 */
 	public YoutubeCrawler(String url) {
-		System.setProperty("webdriver.chrome.driver", YoutubeConstant.PATH_CHROME_EXE);
 		this.url = url;
+		
+		String 	seleniumWebdriver = YoutubeConstant.PATH_CHROME_EXE;
+		ChromeOptions options = new ChromeOptions();
+		
+		Map<String, Object> prefs = new HashMap<String, Object>();
+		prefs.put(YoutubeConstant.DIS_NOTIFICATIONS, 2);
+		options.setExperimentalOption("prefs", prefs);
+	
+		
+		if(System.getenv("SELENIUM_WEB_DRIVER") != null){
+			seleniumWebdriver = System.getenv("SELENIUM_WEB_DRIVER");	
+			options.addArguments("--headless");
+			options.addArguments("--no-sandbox");
+			options.addArguments("--whitelisted-ips=''");
+		}
+
+		System.setProperty("webdriver.chrome.driver", seleniumWebdriver);
+		
+		driver = new ChromeDriver(options);
 		youtubeData = new YoutubeData();
 	}
 	
@@ -42,8 +64,6 @@ public class YoutubeCrawler {
 	 * @throws InterruptedException
 	 */
 	public void openBrowser() throws InterruptedException {
-		// open browser
-		driver = new ChromeDriver();
 		// navigate to url
 		driver.get(url);
 		// // wait for load
